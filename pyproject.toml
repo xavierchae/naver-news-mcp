@@ -1,0 +1,36 @@
+[project]
+name = "naver-news-workspace"
+version = "0.1.0"
+description = "네이버 뉴스 검색·본문 조회 라이브러리와 MCP 서버"
+requires-python = ">=3.11"
+dependencies = ["naver-news", "naver-news-mcp"]
+
+[tool.uv]
+package = false
+
+[tool.uv.workspace]
+members = ["packages/*"]
+
+[tool.uv.sources]
+naver-news = { workspace = true }
+naver-news-mcp = { workspace = true }
+
+[dependency-groups]
+dev = ["pytest>=8", "pytest-asyncio>=0.24", "respx>=0.21", "ruff>=0.6"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+addopts = "-m 'not live'"
+markers = ["live: 실제 네이버 API를 호출한다 (인증 정보 필요)"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/*" = ["E501"]
